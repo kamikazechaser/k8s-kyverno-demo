@@ -1,0 +1,92 @@
+# Pull images from DOCR only
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-image-registry
+  namespace: secure
+  annotations:
+    policies.kyverno.io/title: Restrict To DOCR
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+spec:
+  validationFailureAction: enforce
+  background: true
+  rules:
+    - name: validate-registries
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "Image not from kamikazechaser's registry"
+        pattern:
+          spec:
+            containers:
+              - image: "registry.digitalocean.com/kamikazechaser/*"
+---
+# Ensure deployments have a create-by label
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-labels
+  annotations:
+    policies.kyverno.io/title: Require Labels
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Deployment, Label
+spec:
+  validationFailureAction: enforce
+  background: true
+  rules:
+    - name: check-for-labels
+      match:
+        resources:
+          kinds:
+            - Deployment
+      validate:
+        message: "The label `app.kubernetes.io/created-by` is required."
+        pattern:
+          metadata:
+            labels:
+              app.kubernetes.io/created-by: "?*"
+---
+# Disallow latest tag
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-latest-tag
+  annotations:
+    policies.kyverno.io/title: Disallow Latest Tag
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+spec:
+  validationFailureAction: enforce
+  background: true
+  rules:
+    - name: require-image-tag
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "An image tag is required."
+        pattern:
+          spec:
+            containers:
+              - image: "*:*"
+    - name: validate-image-tag
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "Using a mutable image tag e.g. 'latest' is not allowed."
+        pattern:
+          spec:
+            containers:
+              - image: "!*:latest"
+---
+

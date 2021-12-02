@@ -1,0 +1,15 @@
+namespaces:
+  secure:
+    protected: false
+
+helmRepos:
+  kyverno: https://kyverno.github.io/kyverno/
+
+apps:
+  kyverno:
+    name: kyverno
+    protected: false
+    namespace: secure
+    enabled: true
+    chart: kyverno/kyverno
+    version: 2.1.4-rc2

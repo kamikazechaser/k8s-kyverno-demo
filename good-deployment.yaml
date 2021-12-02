@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: secure
+  name: date-loop
+  labels:
+    app.kubernetes.io/created-by: "kamikazechaser"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: date-loop
+  template:
+    metadata:
+      labels:
+        app: date-loop
+    spec:
+      containers:
+        - name: date-loop
+          image: registry.digitalocean.com/kamikazechaser/date-loop:v1.0.0
