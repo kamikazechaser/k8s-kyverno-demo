@@ -2,7 +2,7 @@
 
 Kyverno is a policy engine for Kubernetes that enforces best practicies and security standards by ensuring Kubernetes resources meet the polices set by the cluster admin.
 
-Policies enforced in this repo:
+[Policies](https://github.com/kamikazechaser/k8s-kyverno-demo/blob/main/policies.yaml) enforced in this repo:
 
 - Pull images from DOCR only
 - Ensure deployments have a `created-by` label
@@ -26,7 +26,7 @@ docker build -t registry.digitalocean.com/<your-docr-registry-name>/date-loop:v1
 docker push registry.digitalocean.com/<your-docr-registry-name>/date-loop --all-tags
 ```
 
-### Install Kyverno and apply policie
+### Install Kyverno and apply policies
 
 ```bash
 # Helmsman is usueful because it locks down chart versions and protects the resources from accidental deletion
