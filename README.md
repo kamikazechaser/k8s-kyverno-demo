@@ -1,8 +1,8 @@
 ## Kubernetes policy enforcement with Kyverno
 
-Kyverno is a policy engine for Kubernetes that enforces best practicies and security standards by ensuring Kuberetest resources meet the polices set by the cluster admin.
+Kyverno is a policy engine for Kubernetes that enforces best practicies and security standards by ensuring Kubernetes resources meet the polices set by the cluster admin.
 
-Policies in this repo:
+Policies enforced in this repo:
 
 - Pull images from DOCR only
 - Ensure deployments have a `created-by` label
